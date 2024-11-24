@@ -17,9 +17,9 @@ jobs:
         with:
           path: |
             **/node_modules
-          key: ${{ runner.os }}-build-${{ hashFiles('bun.lockb','package.json','db/schema.prisma') }}
+          key: ${{ runner.os }}-build-${{ hashFiles('bun.lockb','package.json','prisma/schema.prisma') }}
           restore-keys: |
-            ${{ runner.os }}-build-${{ hashFiles('bun.lockb','package.json','db/schema.prisma') }}
+            ${{ runner.os }}-build-${{ hashFiles('bun.lockb','package.json','prisma/schema.prisma') }}
         # cacheがヒットしなかった場合のみ、bun installとprisma generateを実行する
       - if: ${{ steps.cache.outputs.cache-hit != 'true' }}
         name: Setup Bun 🥟
@@ -32,7 +32,7 @@ jobs:
       - if: ${{ steps.cache.outputs.cache-hit != 'true' }}
         name: Run prisma generate 🏭
         # erd generatorが動作しないよう該当行を削除してから実行
-        run: sed -i '11,13d' db/schema.prisma && bun run prisma generate
+        run: sed -i '11,13d' prisma/schema.prisma && bun run prisma generate
 
   # lintとtestを並列で実行する
   lint:
@@ -51,9 +51,9 @@ jobs:
         with:
           path: |
             **/node_modules
-          key: ${{ runner.os }}-build-${{ hashFiles('bun.lockb','package.json','db/schema.prisma') }}
+          key: ${{ runner.os }}-build-${{ hashFiles('bun.lockb','package.json','prisma/schema.prisma') }}
           restore-keys: |
-            ${{ runner.os }}-build--${{ hashFiles('bun.lockb','package.json','db/schema.prisma') }}
+            ${{ runner.os }}-build--${{ hashFiles('bun.lockb','package.json','prisma/schema.prisma') }}
 
       - name: Setup Bun 🥟
         uses: oven-sh/setup-bun@v1
@@ -79,9 +79,9 @@ jobs:
         with:
           path: |
             **/node_modules
-          key: ${{ runner.os }}-build-${{ hashFiles('bun.lockb','package.json','db/schema.prisma') }}
+          key: ${{ runner.os }}-build-${{ hashFiles('bun.lockb','package.json','prisma/schema.prisma') }}
           restore-keys: |
-            ${{ runner.os }}-build-${{ hashFiles('bun.lockb','package.json','db/schema.prisma') }}
+            ${{ runner.os }}-build-${{ hashFiles('bun.lockb','package.json','prisma/schema.prisma') }}
 
       - name: Setup Bun 🥟
         uses: oven-sh/setup-bun@v1
