@@ -1,4 +1,4 @@
-import { TILES } from "@/app/constants";
+import { TILES } from "../map/const";
 import {
   type Position,
   type Direction,
