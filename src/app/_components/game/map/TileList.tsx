@@ -5,17 +5,14 @@ import { Tile } from "./Tile";
 type TileProps<T extends GameGrid> = {
   heroPosition: Position<T>;
   map: T;
+  handleTileClick: (type: number) => void;
 };
 
 export const TileList = <T extends GameGrid>({
   heroPosition,
   map,
+  handleTileClick,
 }: TileProps<T>) => {
-  // TODO: 当たりのタイルをクリックした時の処理を追加する
-  const handleTileClick = (type: number) => {
-    console.log("type", type);
-  };
-
   // TODO: 宝箱の取得状態を管理する
   const treasureGreenGoldTaken = false;
   const treasureRedGoldTaken = false;

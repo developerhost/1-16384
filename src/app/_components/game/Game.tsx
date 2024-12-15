@@ -54,7 +54,11 @@ const Game = () => {
         userSelect: "none",
       }}
     >
-      <TileList heroPosition={heroPosition} map={ROOM_MAP} />
+      <TileList
+        heroPosition={heroPosition}
+        map={ROOM_MAP}
+        handleTileClick={handleTileClick}
+      />
       <GameController
         moveHero={moveHero}
         // TODO: 当たりの宝箱を開いた場合、スコアをアップして次のマップに遷移する
