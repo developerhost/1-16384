@@ -5,7 +5,7 @@ import {
   type Row,
   type Col,
   type GameGrid,
-} from "./types";
+} from "../types";
 
 function canMoveToTile(tile: number | undefined): boolean {
   return tile === TILES.HERO || tile === TILES.FLOOR;

@@ -2,7 +2,7 @@ import { useState } from "react";
 
 import { useKey } from "react-use";
 import { moveHero } from "./moveHero";
-import { type GameGrid, type Direction, type Position } from "./types";
+import { type GameGrid, type Direction, type Position } from "../types";
 
 export function useHeroMovement<T extends GameGrid>(
   map: T,
