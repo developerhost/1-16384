@@ -16,7 +16,7 @@ export default async function Home() {
         >
           1/2をひたすら当てていき
           <br />
-          ベスト記録を目指すシンプルな
+          ベスト記録を目指す
           <br />
           ブラウザゲーム
         </h1>

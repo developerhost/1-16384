@@ -54,6 +54,7 @@ const Game = () => {
         userSelect: "none",
       }}
     >
+      <RecordDisplay currentRecord={record} bestRecord={bestRecord} />
       <TileList
         heroPosition={heroPosition}
         map={ROOM_MAP}
@@ -78,7 +79,6 @@ const Game = () => {
           {isCorrect ? "正解!" : "不正解!"}
         </div>
       )}
-      <RecordDisplay currentRecord={record} bestRecord={bestRecord} />
     </div>
   );
 };
