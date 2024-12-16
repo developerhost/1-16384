@@ -4,7 +4,7 @@ import { useCallback, useState } from "react";
 import RecordDisplay from "./RecordDisplay";
 import GameController from "./controller/GameController";
 import { useHeroMovement } from "./move/useHeroMovement";
-import { initialPosition, ROOM_MAP } from "./const";
+import { initialPosition, MAP_PATTERNS } from "./const";
 import { TileList } from "./map/TileList";
 import ChatMessage from "./chat/ChatMessage";
 import { useMessage } from "./chat/useMessage";
@@ -21,7 +21,14 @@ const Game = () => {
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const [isCorrect, setIsCorrect] = useState<boolean | null>(null);
 
-  const { heroPosition, moveHero } = useHeroMovement(ROOM_MAP, initialPosition);
+  const [currentMap, setCurrentMap] = useState<(typeof MAP_PATTERNS)[number]>(
+    MAP_PATTERNS[0],
+  );
+
+  const { heroPosition, setHeroPosition, moveHero } = useHeroMovement(
+    currentMap,
+    initialPosition,
+  );
 
   /** 正解判定ロジック */
   const judgeTreasure = useCallback((): boolean => {
@@ -39,8 +46,17 @@ const Game = () => {
       setRecord(1); // 不正解時にリセット
     }
 
+    // マップパターンをランダムに変更
+    const randomMap =
+      MAP_PATTERNS[Math.floor(Math.random() * MAP_PATTERNS.length)] ??
+      MAP_PATTERNS[0];
+    setCurrentMap(randomMap);
+
+    // ヒーローの位置をリセット
+    setHeroPosition(initialPosition);
+
     return correct;
-  }, [record, bestRecord]);
+  }, [setHeroPosition, record, bestRecord]);
 
   const { message, handleTileClick, handleAButtonPress } = useMessage({
     onTreasureFound: judgeTreasure,
@@ -57,13 +73,13 @@ const Game = () => {
       <RecordDisplay currentRecord={record} bestRecord={bestRecord} />
       <TileList
         heroPosition={heroPosition}
-        map={ROOM_MAP}
+        map={currentMap}
         handleTileClick={handleTileClick}
       />
       <GameController
         moveHero={moveHero}
         // TODO: 当たりの宝箱を開いた場合、スコアをアップして次のマップに遷移する
-        onAButtonPress={() => handleAButtonPress(heroPosition, ROOM_MAP)}
+        onAButtonPress={() => handleAButtonPress(heroPosition, currentMap)}
       />
       {/* チャット表示 */}
       {message && (

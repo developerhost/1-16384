@@ -20,5 +20,5 @@ export function useHeroMovement<T extends GameGrid>(
   useKey("ArrowLeft", () => handleMoveHero("ArrowLeft"));
   useKey("ArrowRight", () => handleMoveHero("ArrowRight"));
 
-  return { heroPosition, moveHero: handleMoveHero };
+  return { heroPosition, setHeroPosition, moveHero: handleMoveHero };
 }
