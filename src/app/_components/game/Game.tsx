@@ -4,17 +4,19 @@ import { useCallback, useState } from "react";
 import RecordDisplay from "./RecordDisplay";
 import GameController from "./controller/GameController";
 import { useHeroMovement } from "./move/useHeroMovement";
-import { useLocalStorage } from "react-use";
 import { initialPosition, ROOM_MAP } from "./const";
 import { TileList } from "./map/TileList";
 import ChatMessage from "./chat/ChatMessage";
 import { useMessage } from "./chat/useMessage";
+import { useSyncExternalStore } from "react";
+import { bestRecordStore } from "./bestRecordStore";
 
 const Game = () => {
   const [record, setRecord] = useState<number>(1); // 1 -> 1/2, 2 -> 1/4, etc.
-  const [bestRecord = 0, setBestRecord] = useLocalStorage<number>(
-    "bestRecord",
-    1,
+  const bestRecord = useSyncExternalStore(
+    bestRecordStore.subscribe,
+    bestRecordStore.getSnapshot,
+    bestRecordStore.getSnapshot,
   );
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const [isCorrect, setIsCorrect] = useState<boolean | null>(null);
@@ -31,14 +33,14 @@ const Game = () => {
       const newRecord = record + 1;
       setRecord(newRecord);
       if (newRecord > bestRecord) {
-        setBestRecord(newRecord);
+        bestRecordStore.setValue(newRecord);
       }
     } else {
       setRecord(1); // 不正解時にリセット
     }
 
     return correct;
-  }, [record, bestRecord, setBestRecord]);
+  }, [record, bestRecord]);
 
   const { message, handleTileClick, handleAButtonPress } = useMessage({
     onTreasureFound: judgeTreasure,

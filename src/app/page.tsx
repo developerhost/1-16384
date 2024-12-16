@@ -1,7 +1,11 @@
 import { HydrateClient } from "@/trpc/server";
 import SafeSuspense from "./_components/SafeSuspense";
-import Game from "./_components/game/Game";
 import GA from "./_components/GA";
+import dynamic from "next/dynamic";
+
+const DynamicGame = dynamic(() => import("./_components/game/Game"), {
+  ssr: false,
+});
 
 export default async function Home() {
   return (
@@ -20,7 +24,7 @@ export default async function Home() {
           <br />
           ブラウザゲーム
         </h1>
-        <Game />
+        <DynamicGame />
         <GA />
       </SafeSuspense>
     </HydrateClient>
