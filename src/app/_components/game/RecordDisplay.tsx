@@ -11,9 +11,9 @@ const RecordDisplay = ({ currentRecord, bestRecord }: RecordDisplayProps) => {
     `1/${record === 1 ? 1 : 2 ** (record - 1)}`;
 
   return (
-    <div className="mt-8 text-xl font-semibold">
+    <div className="mt-2 text-xl font-semibold">
       <div>現在の記録: {formatRecord(currentRecord)}</div>
-      <div className="mt-40">ベスト記録: {formatRecord(bestRecord)}</div>
+      <div className="my-2">ベスト記録: {formatRecord(bestRecord)}</div>
     </div>
   );
 };

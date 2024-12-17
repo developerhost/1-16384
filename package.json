@@ -57,6 +57,8 @@
     "react-hook-form": "^7.53.0",
     "react-hot-toast": "^2.4.1",
     "react-images-uploading": "^3.1.7",
+    "react-simple-typewriter": "^5.0.1",
+    "react-use": "^17.6.0",
     "server-only": "^0.0.1",
     "superjson": "^2.2.1",
     "tailwind-merge": "^2.5.2",
