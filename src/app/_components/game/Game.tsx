@@ -65,13 +65,28 @@ const Game = () => {
 
   return (
     <div
-      className="flex flex-col items-center"
+      className="flex w-full flex-col items-center"
       style={{
         WebkitUserSelect: "none" /* Safari */,
         userSelect: "none",
       }}
     >
-      <RecordDisplay currentRecord={record} bestRecord={bestRecord} />
+      <div className="flex w-full flex-row items-center justify-between px-4">
+        <h1
+          className="mb-4 text-lg font-bold md:mb-6 md:text-2xl"
+          style={{
+            WebkitUserSelect: "none" /* Safari */,
+            userSelect: "none",
+          }}
+        >
+          1/2をひたすら当てていき
+          <br />
+          ベスト記録を目指す
+          <br />
+          ブラウザゲーム
+        </h1>
+        <RecordDisplay currentRecord={record} bestRecord={bestRecord} />
+      </div>
 
       {/* AnimatePresenceでマップの変更にアニメーションを追加 */}
       <AnimatePresence mode="wait">
