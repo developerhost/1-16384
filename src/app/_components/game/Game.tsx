@@ -1,10 +1,11 @@
 "use client";
 
 import { useCallback, useState } from "react";
+import { motion, AnimatePresence } from "framer-motion";
 import RecordDisplay from "./RecordDisplay";
 import GameController from "./controller/GameController";
 import { useHeroMovement } from "./move/useHeroMovement";
-import { initialPosition, MAP_PATTERNS } from "./const";
+import { MAP_PATTERNS } from "./const";
 import { TileList } from "./map/TileList";
 import ChatMessage from "./chat/ChatMessage";
 import { useMessage } from "./chat/useMessage";
@@ -16,7 +17,7 @@ const Game = () => {
   const bestRecord = useSyncExternalStore(
     bestRecordStore.subscribe,
     bestRecordStore.getSnapshot,
-    bestRecordStore.getSnapshot,
+    () => 1, // 初期値
   );
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const [isCorrect, setIsCorrect] = useState<boolean | null>(null);
@@ -26,8 +27,8 @@ const Game = () => {
   );
 
   const { heroPosition, setHeroPosition, moveHero } = useHeroMovement(
-    currentMap,
-    initialPosition,
+    currentMap.map,
+    currentMap.initialPosition,
   );
 
   /** 正解判定ロジック */
@@ -47,16 +48,16 @@ const Game = () => {
     }
 
     // マップパターンをランダムに変更
+    const otherMaps = MAP_PATTERNS.filter((map) => map.id !== currentMap.id);
     const randomMap =
-      MAP_PATTERNS[Math.floor(Math.random() * MAP_PATTERNS.length)] ??
+      otherMaps[Math.floor(Math.random() * otherMaps.length)] ??
       MAP_PATTERNS[0];
     setCurrentMap(randomMap);
-
     // ヒーローの位置をリセット
-    setHeroPosition(initialPosition);
+    setHeroPosition(randomMap.initialPosition);
 
     return correct;
-  }, [setHeroPosition, record, bestRecord]);
+  }, [setHeroPosition, record, bestRecord, currentMap.id]);
 
   const { message, handleTileClick, handleAButtonPress } = useMessage({
     onTreasureFound: judgeTreasure,
@@ -71,15 +72,28 @@ const Game = () => {
       }}
     >
       <RecordDisplay currentRecord={record} bestRecord={bestRecord} />
-      <TileList
-        heroPosition={heroPosition}
-        map={currentMap}
-        handleTileClick={handleTileClick}
-      />
+
+      {/* AnimatePresenceでマップの変更にアニメーションを追加 */}
+      <AnimatePresence mode="wait">
+        <motion.div
+          key={currentMap.id} // 一意のIDをキーとして使用
+          initial={{ opacity: 0, x: 100 }}
+          animate={{ opacity: 1, x: 0 }}
+          exit={{ opacity: 0, x: -100 }}
+          transition={{ duration: 0.5 }}
+          className="flex h-full w-full items-center justify-center"
+        >
+          <TileList
+            heroPosition={heroPosition}
+            map={currentMap.map}
+            handleTileClick={handleTileClick}
+          />
+        </motion.div>
+      </AnimatePresence>
+
       <GameController
         moveHero={moveHero}
-        // TODO: 当たりの宝箱を開いた場合、スコアをアップして次のマップに遷移する
-        onAButtonPress={() => handleAButtonPress(heroPosition, currentMap)}
+        onAButtonPress={() => handleAButtonPress(heroPosition, currentMap.map)}
       />
       {/* チャット表示 */}
       {message && (
