@@ -19,10 +19,10 @@ export function useMessage({ onTreasureFound }: UseMessageOptions) {
         setMessage("こんにちは、私は橋田至です！");
         break;
       case TILES.MURABITO:
-        setMessage("村人: ようこそ、冒険者！");
+        setMessage("村人: メッセージはタイルをクリックすると消えるよ");
         break;
       case TILES.CAT:
-        setMessage("猫: にゃーん");
+        setMessage("猫: 宝箱のどちらが正解だよ");
         break;
       case TILES.TREASURE_RED_GOLD: {
         const isCorrect = onTreasureFound();
